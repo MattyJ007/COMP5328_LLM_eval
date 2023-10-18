@@ -8,9 +8,19 @@
 ### Libraries
 
 - numpy
+- matplotlib
+- pandas
 
 ## Run
 
+Noise Classifier
+
 ```sh
-python3 main.py
+python main.py
+```
+
+Visualise Data
+
+```sh
+python visualise.py
 ```

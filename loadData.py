@@ -7,8 +7,4 @@ def getData(file_path='./data/CIFAR.npz'):
   str = dataset['Str']
   xts = dataset['Xts']
   yts = dataset['Yts']
-  print(xtr.shape)
-  print(str.shape)
-  print(xts.shape)
-  print(yts.shape)
   return xtr, str, xts, yts
