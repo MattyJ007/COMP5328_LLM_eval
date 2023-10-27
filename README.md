@@ -13,13 +13,50 @@
 
 ## Run
 
-Noise Classifier
+Transition Matrices are constants.
+Default experiment no. 10
+
+> Update CIFAR T Matrix constant after estimation then run CIFAR classification
+
+### Help
 
 ```sh
-python main.py
+python main.py help
 ```
 
-Visualise Data
+### CIFAR Estimator
+
+```sh
+python main.py estimate
+```
+
+### Noise Classifier
+
+#### Fashion 0.5
+
+```sh
+python main.py fashion5
+```
+
+#### Fashion 0.6
+
+```sh
+python main.py fashion6
+```
+
+#### CIFAR
+
+```sh
+python main.py cifar
+```
+
+#### All (Fashion5, Fashion6, CIFAR)
+
+```sh
+python main.py all
+```
+
+### Visualise Data
 
 ```sh
 python visualise.py
