@@ -1,10 +1,10 @@
 import numpy as np
 
 # Default to CIFAR for testing
-def getData(file_path='./data/CIFAR.npz'):
+def getData(file_path):
   dataset = np.load(file_path)
-  xtr = dataset['Xtr']
-  str = dataset['Str']
+  xtr_val = dataset['Xtr']
+  str_val = dataset['Str']
   xts = dataset['Xts']
   yts = dataset['Yts']
-  return xtr, str, xts, yts
+  return xtr_val, str_val, xts, yts
