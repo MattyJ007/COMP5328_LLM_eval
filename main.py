@@ -1,11 +1,11 @@
 import sys
-from classifier import classify
+from classifier_cnn import classifyCnn
+from classifier_rf import classifyRf
 from estimator import estimate
 
 FASHION_5_TRANSITION_MATRIX=[[0.5, 0.2, 0.3], [0.3, 0.5, 0.2], [0.2, 0.3, 0.5]]
 FASHION_6_TRANSITION_MATRIX=[[0.4, 0.3, 0.3], [0.3, 0.4, 0.3], [0.3, 0.3, 0.4]]
 CIFAR_TRANSITION_MATRIX=[[0.4, 0.3, 0.3], [0.3, 0.4, 0.3], [0.3, 0.3, 0.4]]
-
 
 def help():
   print("Available flags:")
@@ -17,6 +17,21 @@ def help():
   print("- help: Show this help message")
 
 def main():
+  if len(sys.argv) <= 2:
+    print("Usage: python main.py <flag>")
+    help()
+    sys.exit(1)
+
+  flag = sys.argv[1]
+  method = sys.argv[2] if len(sys.argv) > 2 else 'cnn'
+
+  if (method == 'rf'):
+    print ('Method Random Forest')
+    classify = classifyRf
+  else:
+    print ('Method CNN')
+    classify = classifyCnn
+
   actions = {
       "fashion5": lambda: classify('./data/FashionMNIST0.5.npz', FASHION_5_TRANSITION_MATRIX),
       "fashion6": lambda: classify('./data/FashionMNIST0.6.npz', FASHION_6_TRANSITION_MATRIX),
@@ -28,18 +43,12 @@ def main():
       "estimate": lambda: estimate('./data/CIFAR.npz'),
       "help": help
   }
-  
-  if len(sys.argv) != 2:
-      print("Usage: python main.py <flag>")
-      help()
-      sys.exit(1)
 
-  flag = sys.argv[1]
   if flag in actions:
-      actions[flag]()
+    actions[flag]()
   else:
-      print("Invalid flag. Please use one of: fashion5, fashion6, cifar, all, estimate, help")
-      sys.exit(1)
+    print("Invalid flag. Please use one of: fashion5, fashion6, cifar, all, estimate, help")
+    sys.exit(1)
 
 if __name__ == "__main__":
   main()

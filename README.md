@@ -4,6 +4,8 @@
 
 - Anaconda
 - Python3
+- SK Learn
+- Keras
 
 ### Libraries
 
@@ -40,20 +42,22 @@ python main.py fashion5
 
 #### Fashion 0.6
 
+> Pick the method with the second flag: rf or cnn
+
 ```sh
-python main.py fashion6
+python main.py fashion6 <method>
 ```
 
 #### CIFAR
 
 ```sh
-python main.py cifar
+python main.py cifar <method>
 ```
 
 #### All (Fashion5, Fashion6, CIFAR)
 
 ```sh
-python main.py all
+python main.py all <method>
 ```
 
 ### Visualise Data
