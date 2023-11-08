@@ -1,37 +1,44 @@
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.model_selection import GridSearchCV
 from sklearn.metrics import accuracy_score
 from keras.utils import to_categorical
-from sklearn.model_selection import train_test_split
+from sklearn.metrics import confusion_matrix
+from sklearn.preprocessing import normalize
 import numpy as np
 from loadData import getData
 
-def classifyRf(filename, transition_matrix, count=1): #count should be 10 according to 2.1.1
+def classifyRf(filename, transition_matrix, count=2): #count should be 10 according to 2.1.1
 
     xtr_val, str_val, xts, yts = getData(filename)
 
-    #Preprocessing
+    # Preprocessing
     num_classes = len(np.unique(str_val))
-    xtr_val = xtr_val.reshape(xtr_val.shape[0], xtr_val.shape[1], xtr_val.shape[2], 1)
-    xtr_val = xtr_val.astype('float32')
-    xtr_val /= 255
-
+    xtr_val = xtr_val.reshape(xtr_val.shape[0], -1).astype('float32') / 255
     str_val_categorical = to_categorical(str_val, num_classes)
+    
+    # Define the parameter grid for hyperparameter tuning
+    param_grid = {
+        'n_estimators': [200],
+        'max_depth': [10]
+        #'n_estimators': [50, 100, 200],
+        #'max_depth': [10, 20, None]
+    }
 
-    rf_accuracies = []
+    rf = RandomForestClassifier()
 
-    for _ in range(count):
+    grid_search = GridSearchCV(estimator=rf, param_grid=param_grid, cv=count, scoring='accuracy')
 
-        x_train, x_val, y_train, y_val = train_test_split(xtr_val, str_val_categorical, test_size=0.2, stratify=str_val)
+    grid_search.fit(xtr_val, np.argmax(str_val_categorical, axis=1))
 
-        y_train_rf = np.argmax(y_train, axis=1)
-        y_val_rf = np.argmax(y_val, axis=1)
+    best_rf = grid_search.best_estimator_
+    best_score = grid_search.best_score_
+    
+    print("RF Best Validation Accuracy: ", best_score)
+    print("Best Parameters: ", grid_search.best_params_)
 
-        x_train_rf = x_train.reshape(x_train.shape[0], -1)
-        x_val_rf = x_val.reshape(x_val.shape[0], -1)
-
-        rf = RandomForestClassifier(n_estimators=100)
-        rf.fit(x_train_rf, y_train_rf)
-        rf_predictions = rf.predict(x_val_rf)
-        rf_accuracies.append(accuracy_score(y_val_rf, rf_predictions))
-
-    print("RF Average Validation Accuracy: ", sum(rf_accuracies)/count)
+    best_rf.fit(xtr_val, np.argmax(str_val_categorical, axis=1))
+    
+    xts = xts.reshape(xts.shape[0], -1).astype('float32') / 255
+    yts_pred = best_rf.predict(xts)
+    test_accuracy = accuracy_score(yts, yts_pred)
+    print("RF Test Accuracy: ", test_accuracy)
