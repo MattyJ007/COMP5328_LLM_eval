@@ -11,7 +11,6 @@ def getData(file_path):
 
   #convert to greyscale
   if xtr_val.shape[-1] == 3:
-        print("test")
         xtr_val = rgb2gray(xtr_val)
         xts = rgb2gray(xts)
 
