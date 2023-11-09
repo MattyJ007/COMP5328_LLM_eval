@@ -46,7 +46,7 @@ def classifyCnn(filename, transition_matrix, count=1):
     accuracies = []
     for _ in range(count):
         cnn = build_cnn(xtr_val.shape[1:], num_classes, transition_matrix)
-        cnn.fit(xtr_val, ytr_val, epochs=10, batch_size=64, verbose=0)
+        cnn.fit(xtr_val, ytr_val, epochs=10, batch_size=64, verbose=1)
         acc = evaluate_model(cnn, xts, yts)
         accuracies.append(acc)
 
