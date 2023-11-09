@@ -14,10 +14,6 @@ def getData(file_path):
         xtr_val = rgb2gray(xtr_val)
         xts = rgb2gray(xts)
 
-  #flatten the image into 1D array
-  xtr_val = xtr_val.reshape(xtr_val.shape[0], -1)
-  xts = xts.reshape(xts.shape[0], -1)
-
   #normalize the data
   xtr_val = xtr_val.astype('float32') / 255.
   xts = xts.astype('float32') / 255.
